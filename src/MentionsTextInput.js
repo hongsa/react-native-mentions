@@ -75,7 +75,7 @@ export default class MentionsTextInput extends Component {
   identifyKeyword(val) {
     if (this.isTrackingStarted) {
       const boundary = this.props.triggerLocation === 'new-word-only' ? 'B' : '';
-      const pattern = new RegExp(`\\${boundary}${this.props.trigger}[a-z0-9_-]+|\\${boundary}${this.props.trigger}`, `gi`);
+      const pattern = new RegExp(`\\${boundary}${this.props.trigger}[a-z0-9_-ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+|\\${boundary}${this.props.trigger}`, `gi`);
       const keywordArray = val.match(pattern);
       if (keywordArray && !!keywordArray.length) {
         const lastKeyword = keywordArray[keywordArray.length - 1];
@@ -106,17 +106,6 @@ export default class MentionsTextInput extends Component {
   render() {
     return (
       <View>
-        <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
-          <FlatList
-            keyboardShouldPersistTaps={"always"}
-            horizontal={this.props.horizontal}
-            ListEmptyComponent={this.props.loadingComponent}
-            enableEmptySections={true}
-            data={this.props.suggestionsData}
-            keyExtractor={this.props.keyExtractor}
-            renderItem={(rowData) => { return this.props.renderSuggestionsRow(rowData, this.stopTracking.bind(this)) }}
-          />
-        </Animated.View>
         <TextInput
           {...this.props}
           onContentSizeChange={(event) => {
@@ -131,6 +120,17 @@ export default class MentionsTextInput extends Component {
           style={[{ ...this.props.textInputStyle }, { height: Math.min(this.props.textInputMaxHeight, this.state.textInputHeight) }]}
           placeholder={this.props.placeholder ? this.props.placeholder : 'Write a comment...'}
         />
+        <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
+          <FlatList
+            keyboardShouldPersistTaps={"always"}
+            horizontal={this.props.horizontal}
+            ListEmptyComponent={this.props.loadingComponent}
+            enableEmptySections={true}
+            data={this.props.suggestionsData}
+            keyExtractor={this.props.keyExtractor}
+            renderItem={(rowData) => { return this.props.renderSuggestionsRow(rowData, this.stopTracking.bind(this)) }}
+          />
+        </Animated.View>
       </View>
     )
   }
