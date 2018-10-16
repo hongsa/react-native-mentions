@@ -106,6 +106,18 @@ export default class MentionsTextInput extends Component {
   render() {
     return (
       <View>
+      {this.props.renderPosition === 'up' ?
+      <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
+      <FlatList
+        keyboardShouldPersistTaps={"always"}
+        horizontal={this.props.horizontal}
+        enableEmptySections={true}
+        data={this.props.suggestionsData}
+        keyExtractor={this.props.keyExtractor}
+        renderItem={(rowData) => { return this.props.renderSuggestionsRow(rowData, this.stopTracking.bind(this)) }}
+      />
+    </Animated.View>
+  :null}
         <TextInput
           {...this.props}
           onContentSizeChange={(event) => {
@@ -120,23 +132,25 @@ export default class MentionsTextInput extends Component {
           style={[{ ...this.props.textInputStyle }, { height: Math.min(this.props.textInputMaxHeight, this.state.textInputHeight) }]}
           placeholder={this.props.placeholder ? this.props.placeholder : 'Write a comment...'}
         />
-        <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
-          <FlatList
-            keyboardShouldPersistTaps={"always"}
-            horizontal={this.props.horizontal}
-//             ListEmptyComponent={this.props.loadingComponent}
-            enableEmptySections={true}
-            data={this.props.suggestionsData}
-            keyExtractor={this.props.keyExtractor}
-            renderItem={(rowData) => { return this.props.renderSuggestionsRow(rowData, this.stopTracking.bind(this)) }}
-          />
-        </Animated.View>
+        {this.props.renderPosition === 'down' ?
+      <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
+      <FlatList
+        keyboardShouldPersistTaps={"always"}
+        horizontal={this.props.horizontal}
+        enableEmptySections={true}
+        data={this.props.suggestionsData}
+        keyExtractor={this.props.keyExtractor}
+        renderItem={(rowData) => { return this.props.renderSuggestionsRow(rowData, this.stopTracking.bind(this)) }}
+      />
+    </Animated.View>
+  :null}
       </View>
     )
   }
 }
 
 MentionsTextInput.propTypes = {
+  renderPosition: PropTypes.oneOf(['up', 'down']),
   textInputStyle: TextInput.propTypes.style,
   suggestionsPanelStyle: ViewPropTypes.style,
   loadingComponent: PropTypes.oneOfType([
@@ -174,4 +188,5 @@ MentionsTextInput.defaultProps = {
   textInputMinHeight: 30,
   textInputMaxHeight: 80,
   horizontal: true,
+  renderPosition: 'down'
 }
