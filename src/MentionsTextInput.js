@@ -124,7 +124,7 @@ export default class MentionsTextInput extends Component {
           <FlatList
             keyboardShouldPersistTaps={"always"}
             horizontal={this.props.horizontal}
-            ListEmptyComponent={this.props.loadingComponent}
+//             ListEmptyComponent={this.props.loadingComponent}
             enableEmptySections={true}
             data={this.props.suggestionsData}
             keyExtractor={this.props.keyExtractor}
