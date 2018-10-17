@@ -107,7 +107,10 @@ export default class MentionsTextInput extends Component {
     return (
       <View>
       {this.props.renderPosition === 'up' ?
-      <Animated.View style={[{ ...this.props.suggestionsPanelStyle }, { height: this.state.suggestionRowHeight }]}>
+      <Animated.View style={[
+        { ...this.props.suggestionsPanelStyle }, 
+        {position:'absolute', bottom: 60, width: '100%', height: this.state.suggestionRowHeight }
+      ]}>
       <FlatList
         keyboardShouldPersistTaps={"always"}
         horizontal={this.props.horizontal}
